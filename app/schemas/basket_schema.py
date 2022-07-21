@@ -4,22 +4,22 @@ from typing import Optional
 from uuid import UUID
 from app.models.product_model import Product
 from app.schemas.product_schema import ProductId
-# from typing import List
+from typing import List
 
 class BasketCreate(BaseModel):
-    items: ProductId
+    items: List[ProductId]
     status: Optional[bool] = False
     product_count: int = 0
 
 
 class BasketUpdate(BaseModel):
-    items: ProductId
+    items: List[ProductId]
     status: Optional[bool] = False
     product_count: int = 0
     
 # what shows in response
 class BasketOut(BaseModel):
-    items: ProductId
+    items: List[ProductId]
     basket_id: UUID
     status: bool
     created_at: datetime
@@ -27,6 +27,7 @@ class BasketOut(BaseModel):
     product_count: int
 
 class BasketList(BaseModel):
+    # items: List[ProductId]
     basket_id: UUID
     status: bool
     created_at: datetime

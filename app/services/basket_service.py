@@ -2,20 +2,23 @@ from typing import List
 from uuid import UUID
 from app.models.basket_model import Basket
 from app.models.product_model import Product
-from app.schemas.basket_schema import BasketCreate, BasketUpdate
+from app.schemas.basket_schema import BasketCreate, BasketUpdate, BasketList
 
 class BasketService:
     @staticmethod
-    async def list_baskets() -> List[Basket]:
+    async def list_baskets() -> List[BasketList]:
         baskets = await Basket.all().to_list()
         return baskets
     
     @staticmethod
     async def create_basket(data: BasketCreate) -> Basket:
-        product = await Product.find_one(Product.product_id == data.items.product_id)
+        items = []
+        for item in data.items:
+            product = await Product.find_one(Product.product_id == item.product_id)
+            items.append(product)
         status = data.status
         product_count = data.product_count
-        basket = Basket(items=product,status=status,product_count=product_count)
+        basket = Basket(items=items,status=status,product_count=product_count)
         return await basket.insert()
     
     @staticmethod
@@ -26,11 +29,14 @@ class BasketService:
     @staticmethod
     async def update_basket(basket_id: UUID, data: BasketUpdate):
         basket = await BasketService.retrieve_basket(basket_id)
-        product = await Product.find_one(Product.product_id == data.items.product_id)
+        items = []
+        for item in data.items:
+            product = await Product.find_one(Product.product_id == item.product_id)
+            items.append(product)
         status = data.status
         product_count = data.product_count
         data_dic = {
-            'items': product,
+            'items': items,
             'status': status,
             'product_count': product_count
         }
