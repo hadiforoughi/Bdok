@@ -4,7 +4,7 @@ from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from app.models.user_model import User
-
+from app.api.api_v1.router import router
 
 app = FastAPI(
     title= settings.PROJECT_NAME,
@@ -27,3 +27,5 @@ async def app_init():
             User
         ]
     )
+
+app.include_router(router=router,prefix=settings.API_V1_STR)
