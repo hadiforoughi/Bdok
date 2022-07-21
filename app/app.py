@@ -4,6 +4,7 @@ from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from app.models.user_model import User
+from app.models.product_model import Product
 from app.api.api_v1.router import router
 
 app = FastAPI(
@@ -24,7 +25,8 @@ async def app_init():
     await init_beanie(
         database=db_client,
         document_models= [
-            User
+            User,
+            Product
         ]
     )
 
