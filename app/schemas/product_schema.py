@@ -20,3 +20,6 @@ class ProductOut(BaseModel):
     name: str
     description: str
     price: int
+
+class ProductId(BaseModel):
+    product_id: UUID
